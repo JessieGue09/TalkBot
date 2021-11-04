@@ -24,17 +24,16 @@ voice_client = None
 tareas = ['Buy Candy.',
             'Walk the Dog.', 
             'Take a Pen.', 
-            'Love other people.',
-            'one think']
+            'Love other people.']
 try:
-    with open ('takslist') as file:
-        tareas = file.readlines()
+    with open ('tasklist.txt') as f:
+        tareas = f.readlines()
 except:
-    f = open('tasklist.txt')
+    #f = open('tasklist.txt')
 
-# with open('tasklist.txt', 'w') as f:
-#     for item in tareas:
-#         f.write("%s\n" % item)
+    with open('tasklist.txt', 'w') as f:
+        for item in tareas:
+            f.write("%s\n" % item)
 
 class TalkBot(discord.Client):
     async def on_ready(self):
@@ -89,8 +88,15 @@ class TalkBot(discord.Client):
                     '{0} {1} {2.author.mention}'.format(random.choice(RESPONSES), random.choice(FACES), message))
             
             elif 'help' in message.content:
-                await message.channel.send('Hello, you can use the command add "you task", for add a task in the list \n If you need look the task use "show my list" \n Dont forget call the bot with @TalkBot \n Thanks!')
-
+                await message.channel.send('Hello, you can use the command add "your task", to add a task in the list \n '
+                'If you need to look at the task use "show my list" \n '
+                'Dont forget to call the bot with @TalkBot \n '
+                'if you check a fact, talk to the bot with "give me a fact" \n '
+                'Mention your name with "I am" \n '
+                'Question the bot if its alive with "Are you alive?". \n '
+                'Thanks!')
+                await message.channel.send(
+                    '{0} {1.author.mention}'.format(random.choice(FACES), message))
             elif 'give me a fact' in message.content: 
 
                 response = requests.get('https://uselessfacts.jsph.pl/random.json?language=en')
@@ -102,8 +108,8 @@ class TalkBot(discord.Client):
 
                     await message.channel.send('{0} - Courtesy of https://uselessfacts.jsph.pl {1.author.mention}'.format(response.json()['text'], message))
 
-            elif len(split_msg) > 2 and split_msg[1] == 'add':
-                addtask = " ".join(split_msg[2:])
+            elif len(split_msg) > 2 and split_msg[2] == 'add':
+                addtask = " ".join(split_msg[3:])
                 tareas.append(addtask)
                 
                 with open('tasklist.txt', 'a') as f:
