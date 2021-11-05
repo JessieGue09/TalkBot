@@ -77,10 +77,11 @@ class TalkBot(discord.Client):
 
             # Create homework list to add in the split_msg list
             #tareas = tareasejmp.split()
-            #split_msg.extend(tareas)
+            split_msg.extend(' ')
             #split_msg.extend([t.split() for t in tareas])
-            for t in tareas:
-                split_msg.extend(t.split())
+            #for t in tareas:
+            #    split_msg.extend(t.split())
+            
 
             # return a randomized magic 8-ball style response along with an ASCII face
             if message.content.endswith('?'):
@@ -117,8 +118,13 @@ class TalkBot(discord.Client):
                         f.write("%s\n" % addtask)
             
             elif 'show my list' in message.content:
+
+                for t in tareas:
+                    split_msg.extend(t.split())
+
                 # play audio via GTTS of the user's message
                 if len(split_msg) > 2 and split_msg[1] == 'tts':
+                    
 
                     # TODO: use bytestream object instead of saving .mp3 locally
                     tts = gTTS(" ".join(split_msg[2:]), 'com.au')
